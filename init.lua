@@ -34,6 +34,9 @@ vim.opt.smartcase = true  -- 除非搜尋關鍵字有大寫，否則不忽略
 -- ✍️ 寫作專屬：原生排版與折行優化 (新增)
 -- ==============================================================================
 
+-- 限制正文的最大文本宽度，强制让每行在写满约 40-50 个汉字时自动折行
+vim.opt.textwidth = 80
+
 -- 啟用自動折行 (Wrap)。寫長文章時，段落到屏幕邊界會自動折回，而不是一直往右延伸
 vim.opt.wrap = true
 
@@ -47,8 +50,8 @@ vim.opt.scrolloff = 8
 vim.opt.cursorline = true
 
 -- -- 其他設定
--- vim.opt.mouse = "a"       -- 啟用滑鼠 (新手友善)
--- vim.opt.clipboard = "unnamedplus" -- 允許 Neovim 使用系統剪貼簿
+vim.opt.mouse = "a"       -- 啟用滑鼠 (新手友善)
+vim.opt.clipboard = "unnamedplus" -- 允許 Neovim 使用系統剪貼簿
 
 -- -- ==============================================================================
 -- -- 基礎按鍵映射 (Basic Keymaps)
