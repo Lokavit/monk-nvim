@@ -16,19 +16,35 @@ vim.cmd("colorscheme matrix")
 
 
 -- -- 設置 leader 鍵 (通常建議設為空白鍵)
--- vim.g.mapleader = " "
--- vim.g.maplocalleader = " "
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
  
 -- -- 縮排設定
--- vim.opt.tabstop = 4
--- vim.opt.shiftwidth = 4
--- vim.opt.expandtab = true
--- vim.opt.smartindent = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
 
 -- -- 搜尋設定
--- vim.opt.ignorecase = true -- 忽略大小寫
--- vim.opt.smartcase = true  -- 除非搜尋關鍵字有大寫，否則不忽略
+vim.opt.ignorecase = true -- 忽略大小寫
+vim.opt.smartcase = true  -- 除非搜尋關鍵字有大寫，否則不忽略
+
+-- ==============================================================================
+-- ✍️ 寫作專屬：原生排版與折行優化 (新增)
+-- ==============================================================================
+
+-- 啟用自動折行 (Wrap)。寫長文章時，段落到屏幕邊界會自動折回，而不是一直往右延伸
+vim.opt.wrap = true
+
+-- 智能折行：折行時會保持單詞/漢字的完整，不會從一個英文單詞中間強行劈開
+vim.opt.linebreak = true
+
+-- 保持光標上下有 8 行的餘量。當你往下寫時，屏幕會平滑滾動，不會讓你的眼睛總盯著屏幕最底端
+vim.opt.scrolloff = 8
+
+-- 淡淡地高亮當前游標所在的整行（在密密麻麻的文字裡一眼找到自己寫到哪了）
+vim.opt.cursorline = true
 
 -- -- 其他設定
 -- vim.opt.mouse = "a"       -- 啟用滑鼠 (新手友善)
@@ -48,13 +64,13 @@ vim.cmd("colorscheme matrix")
 -- -- { desc = "..." }: 描述此功能，在某些插件（如 which-key）中會顯示提示。
 
 -- -- 快速保存 (Leader + w) 按下 Space + w = 儲存檔案。
--- vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
+vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 
 -- -- 快速退出 (Leader + q)
--- vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 
 -- -- 取消搜尋高亮
--- vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear search highlights" })
 
 -- -- ==============================================================================
 -- -- 專案快捷鍵
