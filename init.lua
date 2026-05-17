@@ -49,6 +49,35 @@ vim.opt.cursorline = true
 vim.opt.mouse = "a"               -- 啟用滑鼠
 vim.opt.clipboard = "unnamedplus" -- 允許 Neovim 使用系統剪貼簿
 
+
+-- ==============================================================================
+-- 📊 狀態欄自定義 (Statusline with Word Count)
+-- ==============================================================================
+
+-- 创建一个全局变量存储当前缓冲区的字数
+_G.md_word_count = 0
+
+-- 定义状态栏的渲染函数
+function _G.my_statusline()
+    -- 左侧：文件名、修改标记
+    local left = " %f %m %r"
+    -- 中间的分隔符，用来把后面的内容推到最右侧
+    local align = "%="
+    -- 右侧：字数统计（如果是 Markdown 才会显示字数）
+    local right = ""
+    if vim.bo.filetype == "markdown" then
+        right = "words: " .. _G.md_word_count .. " | "
+    end
+    -- 右侧原有的常规信息：文件编码、光标行列位置
+    right = right .. "%y %{&fileencoding?&fileencoding:&encoding} [%p%%] %l:%c "
+    
+    return left .. align .. right
+end
+
+-- 启用并应用自定义状态栏
+vim.opt.statusline = "%!v:lua.my_statusline()"
+
+
 -- ==============================================================================
 -- 基礎按鍵映射 (Basic Keymaps)
 -- ==============================================================================
@@ -160,11 +189,29 @@ vim.api.nvim_create_autocmd("BufWritePre", {
             end
         end
 
+        -- 【新增同步】将统计出的字数同步到状态栏全局变量中
+        _G.md_word_count = word_count
+
         -- C. 将统计出的字数回写
         for idx, line in ipairs(lines) do
             if line:match("^words:") then
                 local new_line = "words: " .. word_count
                 vim.api.nvim_buf_set_lines(0, idx - 1, idx, false, { new_line })
+                break
+            end
+        end
+    end
+})
+
+-- 【新增触发】打开 Markdown 文件读取时，也自动初始化一下状态栏字数
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufEnter" }, {
+    pattern = "*.md",
+    callback = function()
+        local lines = vim.api.nvim_buf_get_lines(0, 0, 20, false)
+        for _, line in ipairs(lines) do
+            local count = line:match("^words:%s*(%d+)")
+            if count then
+                _G.md_word_count = tonumber(count) or 0
                 break
             end
         end
