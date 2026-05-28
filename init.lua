@@ -51,6 +51,31 @@ vim.opt.clipboard = "unnamedplus" -- 允許 Neovim 使用系統剪貼簿
 
 
 -- ==============================================================================
+-- ☸ Buddhist Era Time Formatter
+-- ==============================================================================
+
+function _G.be_date()
+    local t = os.date("*t")
+
+    local be_year = t.year + 543
+
+    local months = {
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    }
+
+    return string.format(
+        "%02d %s %d BE %02d:%02d:%02d",
+        t.day,
+        months[t.month],
+        be_year,
+        t.hour,
+        t.min,
+        t.sec
+    )
+end
+
+-- ==============================================================================
 -- 📊 狀態欄自定義 (Statusline with Word Count)
 -- ==============================================================================
 
@@ -104,7 +129,7 @@ vim.api.nvim_create_autocmd("FileType", {
         
         -- 定义插入 YAML 的函数
         local function insert_writing_yaml()
-            local date_str = os.date("%Y-%m-%d %H:%M:%S")
+            local date_str = _G.be_date()
             local yaml = {
                 "---",
                 "title: ",
@@ -155,7 +180,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         if yaml_delim_count < 2 then return end
 
         -- A. 更新最后修改时间
-        local current_time = os.date("%Y-%m-%d %H:%M:%S")
+        local current_time = _G.be_date()
         local lines = vim.api.nvim_buf_get_lines(0, 0, 20, false)
         
         for idx, line in ipairs(lines) do
